@@ -128,6 +128,32 @@ body{background:linear-gradient(135deg,#edf4ef 0%,#f7f8f4 48%,#e8f2ed 100%);back
 @media(max-width:850px){.shell{grid-template-columns:1fr}.sidebar{height:auto;min-height:0;overflow:visible;display:block;padding:14px}.sidebar:before{display:none}.sidefoot{display:none}.nav{display:flex}.nav small{display:none}.main{padding:20px 14px}.top{align-items:flex-start;flex-direction:column}.actions{width:100%}.actions .btn{flex:1}.cols{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.panel,.nav button,.btn{transition:none!important}}
 
+
+/* WorkTrack layout repair + refined finish */
+:root{--lift:0 12px 32px rgba(13,54,44,.09);--lift-hover:0 18px 42px rgba(13,54,44,.15)}
+.shell{grid-template-columns:252px minmax(0,1fr)}
+.sidebar{position:sticky;top:0;height:100vh;min-height:100vh;overflow-y:auto}
+.sidefoot{position:static;margin:auto 8px 4px;padding-top:22px;line-height:1.5;flex-shrink:0}
+.nav{flex:0 0 auto}
+.main{min-width:0}
+.cols{align-items:start;grid-template-columns:minmax(0,1.35fr) minmax(340px,1fr)}
+.cols>.panel{min-width:0;height:auto;min-height:0}
+#todayList{min-width:0}
+.task{display:grid;grid-template-columns:18px minmax(0,1fr) auto;align-items:start;column-gap:10px;min-width:0}
+.task-main{min-width:0;width:100%;overflow-wrap:anywhere;word-break:normal}
+.task-title{white-space:normal;overflow-wrap:anywhere;word-break:normal}
+.task-meta{white-space:normal;overflow-wrap:anywhere}
+.task>.pill{justify-self:end;align-self:start}
+.task input{width:16px!important;min-width:16px!important;max-width:16px!important;flex:0 0 16px}
+.panel{box-shadow:var(--lift);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.panel:hover{transform:translateY(-2px);box-shadow:var(--lift-hover);border-color:#c7ded2}
+.btn{transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(15,75,61,.13)}
+.btn.primary{background:linear-gradient(135deg,#0b8b78,#086b60);border-color:#08786a;box-shadow:0 7px 18px rgba(8,127,115,.22)}
+.version-tag{display:none!important}
+@media(max-width:1000px){.cols{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:850px){.sidebar{height:auto;min-height:0;position:relative;overflow:visible}.sidefoot{display:none}.cols{grid-template-columns:minmax(0,1fr)}}
+
 </style></head>
 <body><div class="shell">
 <aside class="sidebar"><div class="brand">◈ Pavan Chaitanya</div><div class="subbrand">WORK TRACK · Personal Engineering Workspace</div><nav class="nav" id="nav"><small>Workspace</small><button class="active" data-page="dashboard">▦ &nbsp; Dashboard</button><button data-page="tasks">☑ &nbsp; Tasks</button><button data-page="timelog">◷ &nbsp; Time Logger</button><button data-page="projects">▣ &nbsp; Projects</button><small>Engineering</small><button data-page="drawings">▤ &nbsp; Drawings &amp; BOM</button><button data-page="materials">◫ &nbsp; Materials &amp; PRS/MRS</button><button data-page="changes">↻ &nbsp; ECR tracking</button><button data-page="vendors">⇄ &nbsp; Vendors</button><small>Insights</small><button data-page="reports">▥ &nbsp; Weekly reports</button><button data-page="settings">⚙ &nbsp; Settings &amp; backup</button></nav><div class="sidefoot">Personal tracker · Keep company-confidential data out unless approved.</div></aside>
