@@ -1,4 +1,4 @@
-const CACHE = 'worktrack-visual-fix-20261124-2';
+const CACHE = 'worktrack-v2';
 const FILES = ['./', './index.html', './manifest.webmanifest'];
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES))));
 self.addEventListener('activate', event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))));
