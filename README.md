@@ -1,2 +1,5 @@
-# Pavan Chaitanya WorkTrack v0.7
-Professional personal engineering work tracker. This package adds dashboard analytics, subtle depth effects and a global Update Now cloud-sync action.
+Pavan Chaitanya WorkTrack — Professional Motion Refresh
+
+Upload index.html, sw.js and manifest.webmanifest to the repository root.
+This update refines the dashboard layout, sidebar footer, task wrapping, professional navy/steel-blue palette, card depth and subtle motion. Existing application data model and Google Apps Script integration are retained.
+Back up WorkTrack data before updating. After deployment, reload the site; the service worker uses a new cache version.
