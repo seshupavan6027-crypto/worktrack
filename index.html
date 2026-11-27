@@ -239,6 +239,13 @@ label,.eyebrow{color:#8d4d12!important}
 #page-timelog .cal-date{color:#17120d!important}#page-timelog .cal-hours{color:#8b4a0e!important}#page-timelog .cal-work{color:#65513a!important}
 @media(max-width:900px){#page-timelog .timesheet-layout{grid-template-columns:1fr}}
 
+
+/* Click-to-sort support for every main and nested/sub-option table */
+.table thead th, table thead th { cursor:pointer; user-select:none; position:relative; }
+.table thead th.sortable:hover, table thead th.sortable:hover { background:color-mix(in srgb,var(--theme-accent,var(--blue)) 12%,transparent); }
+th .sort-indicator { display:inline-block; margin-left:5px; opacity:.7; font-size:10px; }
+th.sort-asc .sort-indicator, th.sort-desc .sort-indicator { opacity:1; color:var(--theme-accent,var(--blue)); }
+
 </style></head>
 <body><div class="shell">
 <aside class="sidebar"><div class="brand">◈ Pavan Chaitanya</div><div class="subbrand">WORK TRACK · Personal Engineering Workspace</div><nav class="nav" id="nav"><small>Workspace</small><button class="active" data-page="dashboard">▦ &nbsp; Dashboard</button><button data-page="tasks">☑ &nbsp; Tasks</button><button data-page="timelog">◷ &nbsp; Time Logger</button><button data-page="projects">▣ &nbsp; Projects</button><small>Engineering</small><button data-page="drawings">▤ &nbsp; Drawings &amp; BOM</button><button data-page="materials">◫ &nbsp; Materials &amp; PRS/MRS</button><button data-page="changes">↻ &nbsp; ECR tracking</button><button data-page="vendors">⇄ &nbsp; Vendors</button><small>Insights</small><button data-page="reports">▥ &nbsp; Weekly reports</button><button data-page="settings">⚙ &nbsp; Settings &amp; backup</button></nav><div class="sidefoot">Personal tracker · Keep company-confidential data out unless approved.</div></aside>
@@ -344,4 +351,43 @@ window.resetTheme=()=>{let p=presets[0];apply({name:p[0],accent:p[1],bg:p[2],car
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',render);else render();
 })();
 </script>
+
+<script id="worktrack-universal-table-sort-v1">
+(()=>{
+  const states=new WeakMap();
+  const norm=v=>(v??'').toString().trim();
+  function value(cell){
+    if(!cell)return '';
+    const explicit=cell.getAttribute('data-sort-value');
+    return norm(explicit!==null?explicit:cell.innerText||cell.textContent);
+  }
+  function compare(a,b){
+    const aa=norm(a),bb=norm(b);
+    if(!aa&&!bb)return 0;if(!aa)return 1;if(!bb)return -1;
+    const na=Number(aa.replace(/[₹$,\s]/g,'')),nb=Number(bb.replace(/[₹$,\s]/g,''));
+    if(/^-?\d+(\.\d+)?$/.test(aa.replace(/,/g,''))&&/^-?\d+(\.\d+)?$/.test(bb.replace(/,/g,'')))return Number(aa.replace(/,/g,''))-Number(bb.replace(/,/g,''));
+    const da=Date.parse(aa),db=Date.parse(bb);if(!Number.isNaN(da)&&!Number.isNaN(db))return da-db;
+    return aa.localeCompare(bb,undefined,{numeric:true,sensitivity:'base'});
+  }
+  document.addEventListener('click',e=>{
+    const th=e.target.closest('table thead th');if(!th)return;
+    const table=th.closest('table');if(!table)return;
+    const headers=[...th.parentElement.children];const col=headers.indexOf(th);if(col<0)return;
+    const label=norm(th.innerText||th.textContent).toLowerCase();
+    if(/^(actions?|operations?)$/.test(label))return;
+    const body=table.tBodies?.[0];if(!body||body.rows.length<2)return;
+    const prior=states.get(table)||{col:-1,dir:1};const dir=prior.col===col?-prior.dir:1;
+    const rows=[...body.rows].map((row,index)=>({row,index,val:value(row.cells[col])}));
+    rows.sort((a,b)=>{const c=compare(a.val,b.val);return c===0?a.index-b.index:c*dir});
+    rows.forEach(x=>body.appendChild(x.row));
+    states.set(table,{col,dir});
+    headers.forEach(h=>{h.classList.remove('sortable','sort-asc','sort-desc');const old=h.querySelector('.sort-indicator');if(old)old.remove();});
+    headers.forEach(h=>{const txt=norm(h.innerText||h.textContent).toLowerCase();if(!/^(actions?|operations?)$/.test(txt)){h.classList.add('sortable');const mark=document.createElement('span');mark.className='sort-indicator';mark.textContent='↕';h.appendChild(mark);}});
+    th.classList.add(dir===1?'sort-asc':'sort-desc');th.querySelector('.sort-indicator').textContent=dir===1?'▲':'▼';
+  });
+  function markHeaders(root=document){root.querySelectorAll('table thead th').forEach(th=>{const txt=norm(th.innerText||th.textContent).toLowerCase();if(!/^(actions?|operations?)$/.test(txt)){th.classList.add('sortable');if(!th.querySelector('.sort-indicator')){const m=document.createElement('span');m.className='sort-indicator';m.textContent='↕';th.appendChild(m);}}});}
+  markHeaders();new MutationObserver(()=>markHeaders()).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
+
 </body></html>
