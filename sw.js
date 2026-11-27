@@ -1,4 +1,4 @@
-const CACHE = 'worktrack-saffron-black-20261127-1';
+const CACHE = 'worktrack-professional-motion-20261124-3';
 const FILES = ['./', './index.html', './manifest.webmanifest'];
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES)).then(() => self.skipWaiting())));
 self.addEventListener('activate', event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())));
