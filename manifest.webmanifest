@@ -4,7 +4,7 @@
   "description": "Personal mechanical R&D work manager",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f3f6fa",
-  "theme_color": "#14243a",
+  "background_color": "#f3f6fb",
+  "theme_color": "#172b4d",
   "icons": []
 }
